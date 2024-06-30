@@ -1,6 +1,8 @@
 package com.example.moodup.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.Toolbar
 import coil.load
@@ -38,7 +41,7 @@ class ComicDetailFragment : Fragment() {
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        /*bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     moreButton.text = "Collapse"
@@ -49,16 +52,16 @@ class ComicDetailFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
-        })
+        })*/
 
         moreButton.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+            /*if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 moreButton.text = "Collapse"
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 moreButton.text = "Find out more"
-            }
+            }*/
         }
 
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
@@ -95,6 +98,23 @@ class ComicDetailFragment : Fragment() {
                 val part2 = it.substring(4)
                 val charToAdd = 's'
                 comicThumbnail.load("$part1$charToAdd$part2")
+            }
+            comic.urls?.let { urls ->
+                val comicUrl = urls.firstOrNull()?.url
+                if (comicUrl != null) {
+                    moreButton.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(comicUrl))
+                        moreButton.context.startActivity(intent)
+                    }
+                } else {
+                    moreButton.setOnClickListener {
+                        Toast.makeText(moreButton.context, "Link to comic not found :(", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } ?: run {
+                moreButton.setOnClickListener {
+                    Toast.makeText(moreButton.context, "Link to comic not found :(", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

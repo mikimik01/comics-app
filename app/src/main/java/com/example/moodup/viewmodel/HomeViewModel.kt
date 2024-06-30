@@ -48,7 +48,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ComicDataWrapper>, t: Throwable) {
-                Log.e("HomeViewModel", "Brak internetu", t)
+                Log.e("HomeViewModel", "Brak internetu/blad", t)
                 _loading.value = false
             }
         })

@@ -3,8 +3,6 @@ package com.example.moodup.data
 import android.os.Parcel
 import android.os.Parcelable
 
-
-
 data class ComicDataWrapper(
     val code: Int?,
     val status: String?,
@@ -27,6 +25,7 @@ data class Comic(
     val id: Int?,
     val title: String?,
     val description: String?,
+    val urls: List<MyUrl>?,
     val thumbnail: Image?,
     val creators: CreatorList?
 ) : Parcelable {
@@ -34,6 +33,7 @@ data class Comic(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
+        parcel.createTypedArrayList(MyUrl),
         parcel.readParcelable(Image::class.java.classLoader),
         parcel.readParcelable(CreatorList::class.java.classLoader)
     )
@@ -42,6 +42,7 @@ data class Comic(
         parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeString(description)
+        parcel.writeTypedList(urls)
         parcel.writeParcelable(thumbnail, flags)
         parcel.writeParcelable(creators, flags)
     }
@@ -161,7 +162,31 @@ data class CreatorSummary(
     }
 }
 
-data class Thumbnail(
-    val path: String,
-    val extension: String
-)
+data class MyUrl(
+    val type: String?,
+    val url: String?
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(type)
+        parcel.writeString(url)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<MyUrl> {
+        override fun createFromParcel(parcel: Parcel): MyUrl {
+            return MyUrl(parcel)
+        }
+
+        override fun newArray(size: Int): Array<MyUrl?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

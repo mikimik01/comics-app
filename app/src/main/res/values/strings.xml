@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Comics App</string>
+    <string name="no_comic_found">There is no comic book with that name in our library. Check the spelling and try again.</string>
+    <string name="search_for_a_comic_book_3_chars_min">Search for a comic book (3 chars min.)</string>
+    <string name="cancel">Cancel</string>
+    <string name="marvel_comics">Marvel Comics</string>
+    <string name="start_typing_to_find_a_particular_comics">Start typing to find a particular comics.</string>
+</resources>

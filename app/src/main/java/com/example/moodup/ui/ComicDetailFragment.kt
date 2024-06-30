@@ -23,6 +23,7 @@ class ComicDetailFragment : Fragment() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
     private lateinit var moreButton: Button
+    private lateinit var bottomSheet: FrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,71 +35,57 @@ class ComicDetailFragment : Fragment() {
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val bottomSheet: FrameLayout = view.findViewById(R.id.bottom_sheet)
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        moreButton = view.findViewById(R.id.button)
-
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-
-        /*bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    moreButton.text = "Collapse"
-                } else {
-                    moreButton.text = "Find out more"
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        })*/
-
-        moreButton.setOnClickListener {
-            /*if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                moreButton.text = "Collapse"
-            } else {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                moreButton.text = "Find out more"
-            }*/
-        }
-
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
 
+        //Init
+        bottomSheet = view.findViewById(R.id.bottom_sheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        moreButton = view.findViewById(R.id.button)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        //Geting comic
         val comic: Comic? = arguments?.getParcelable("comic")
 
+        //Setting layout atributes from comic data
         comic?.let {
             val comicTitle: TextView = view.findViewById(R.id.comicTitle)
             val comicAuthor: TextView = view.findViewById(R.id.comicAuthor)
             val comicDescription: TextView = view.findViewById(R.id.comicDescription)
             val comicThumbnail: ImageView = view.findViewById(R.id.comicThumbnail)
 
+            //seting title
             comic.title?.takeIf { it.isNotBlank() }?.let {
                 comicTitle.text = it
             } ?: run {
                 comicTitle.text = "No Title"
             }
 
+            //seting description
             comic.description?.takeIf { it.isNotEmpty() }?.let {
                 comicDescription.text = it
             } ?: run {
                 comicDescription.text = "No Description"
             }
+
+            //seting creators
             comic.creators?.items?.takeIf { it.isNotEmpty() }?.joinToString(", ") { it.name.toString() }?.let {
                 comicAuthor.text = "written by $it\n"
             } ?: run {
                 comicAuthor.text = "Unknown Authors\n"
             }
+
+            //seting image
             comic.thumbnail?.url?.let {
                 val part1 = it.substring(0, 4)
                 val part2 = it.substring(4)
                 val charToAdd = 's'
                 comicThumbnail.load("$part1$charToAdd$part2")
             }
+
+            //setting button
             comic.urls?.let { urls ->
                 val comicUrl = urls.firstOrNull()?.url
                 if (comicUrl != null) {
@@ -119,6 +106,7 @@ class ComicDetailFragment : Fragment() {
         }
     }
 
+    //creating new instance
     companion object {
         fun newInstance(comic: Comic): ComicDetailFragment {
             val args = Bundle()

@@ -20,14 +20,15 @@ class SearchViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val publicKey = "1b1d366d594a5a142c7d2c04a5e0e17b"
-    private val privateKey = "d4aed0917e835baaf7ec60e084fc53f4bb011fff"
+    private val publicKey = "ddf99221f3ef736b4d3443c8cfd36c18"
+    private val privateKey = "5de5706c3a4837d91652a91702efbf62b0410722"
     private val ts = "1"
 
     fun searchComics(query: String) {
         _loading.value = true
         val hash = md5("$ts$privateKey$publicKey")
         val call = MarvelApi.retrofitService.searchComics(ts, publicKey, hash, query)
+        Log.d("taggerrr", hash)
         call.enqueue(object : Callback<ComicDataWrapper> {
             override fun onResponse(call: Call<ComicDataWrapper>, response: Response<ComicDataWrapper>) {
                 _loading.value = false

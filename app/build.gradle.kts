@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.moodup"
-        minSdk = 31
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -62,6 +62,8 @@ dependencies {
     testImplementation(libs.mockito.inline)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.androidx.test.core)
+
+    implementation(libs.okhttp)
 
 }
 

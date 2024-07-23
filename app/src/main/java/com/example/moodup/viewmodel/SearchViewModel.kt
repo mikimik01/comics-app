@@ -1,9 +1,11 @@
 package com.example.moodup.viewmodel
 
 import android.util.Log
+import androidx.core.os.BuildCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moodup.BuildConfig
 import com.example.moodup.data.Comic
 import com.example.moodup.data.ComicDataWrapper
 import com.example.moodup.data.MarvelApi
@@ -20,14 +22,14 @@ class SearchViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val publicKey = "ddf99221f3ef736b4d3443c8cfd36c18"
-    private val privateKey = "5de5706c3a4837d91652a91702efbf62b0410722"
+    private val privateKey = BuildConfig.API_PRIVATE_KEY
+    private val publicKey = BuildConfig.API_PUBLIC_KEY
     private val ts = "1"
 
     fun searchComics(query: String) {
         _loading.value = true
         val hash = md5("$ts$privateKey$publicKey")
-        val call = MarvelApi.retrofitService.searchComics(ts, publicKey, hash, query)s
+        val call = MarvelApi.retrofitService.searchComics(ts, publicKey, hash, query)
         call.enqueue(object : Callback<ComicDataWrapper> {
             override fun onResponse(call: Call<ComicDataWrapper>, response: Response<ComicDataWrapper>) {
                 _loading.value = false

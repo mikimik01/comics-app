@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -15,6 +17,30 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        //load the values from .properties file
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        //return empty key in case something goes wrong
+        val apiPublicKey = properties.getProperty("API_PUBLIC_KEY") ?: ""
+        val apiPrivateKey = properties.getProperty("API_PRIVATE_KEY") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "API_PRIVATE_KEY",
+            value = apiPrivateKey
+        )
+        buildConfigField(
+            type = "String",
+            name = "API_PUBLIC_KEY",
+            value = apiPublicKey
+        )
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

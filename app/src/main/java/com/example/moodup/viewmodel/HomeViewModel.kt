@@ -35,7 +35,6 @@ class HomeViewModel : ViewModel() {
         _loading.value = true
         val hash = md5("$ts$privateKey$publicKey")
         val call = MarvelApi.retrofitService.getComics(ts, publicKey, hash, limit, offset)
-        Log.d("taggerrr", hash)
         call.enqueue(object : Callback<ComicDataWrapper> {
             override fun onResponse(call: Call<ComicDataWrapper>, response: Response<ComicDataWrapper>) {
                 if (response.isSuccessful) {

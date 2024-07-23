@@ -27,8 +27,7 @@ class SearchViewModel : ViewModel() {
     fun searchComics(query: String) {
         _loading.value = true
         val hash = md5("$ts$privateKey$publicKey")
-        val call = MarvelApi.retrofitService.searchComics(ts, publicKey, hash, query)
-        Log.d("taggerrr", hash)
+        val call = MarvelApi.retrofitService.searchComics(ts, publicKey, hash, query)s
         call.enqueue(object : Callback<ComicDataWrapper> {
             override fun onResponse(call: Call<ComicDataWrapper>, response: Response<ComicDataWrapper>) {
                 _loading.value = false

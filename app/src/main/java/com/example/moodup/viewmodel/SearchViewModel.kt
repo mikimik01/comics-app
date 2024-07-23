@@ -1,9 +1,11 @@
 package com.example.moodup.viewmodel
 
 import android.util.Log
+import androidx.core.os.BuildCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moodup.BuildConfig
 import com.example.moodup.data.Comic
 import com.example.moodup.data.ComicDataWrapper
 import com.example.moodup.data.MarvelApi
@@ -20,8 +22,8 @@ class SearchViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val publicKey = "1b1d366d594a5a142c7d2c04a5e0e17b"
-    private val privateKey = "d4aed0917e835baaf7ec60e084fc53f4bb011fff"
+    private val privateKey = BuildConfig.API_PRIVATE_KEY
+    private val publicKey = BuildConfig.API_PUBLIC_KEY
     private val ts = "1"
 
     fun searchComics(query: String) {

@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moodup.BuildConfig
 import com.example.moodup.data.Comic
 import com.example.moodup.data.ComicDataWrapper
 import com.example.moodup.data.MarvelApi
@@ -18,8 +19,8 @@ class HomeViewModel : ViewModel() {
     private val _comics = MutableLiveData<List<Comic>>()
     val comics: LiveData<List<Comic>> get() = _comics
 
-    private val publicKey = "1b1d366d594a5a142c7d2c04a5e0e17b"
-    private val privateKey = "d4aed0917e835baaf7ec60e084fc53f4bb011fff"
+    private val privateKey = BuildConfig.API_PRIVATE_KEY
+    private val publicKey = BuildConfig.API_PUBLIC_KEY
     private val ts = "1"
     private var offset = 0
     private val limit = 10
@@ -42,13 +43,13 @@ class HomeViewModel : ViewModel() {
                     _comics.value = _comics.value?.plus(newComics) ?: newComics
                     offset += limit
                 } else {
-                    Log.e("HomeViewModel", "Zla odp: ${response.errorBody()}")
+                    Log.e("HomeViewModell", "Zla odp: ${response.errorBody()}")
                 }
                 _loading.value = false
             }
 
             override fun onFailure(call: Call<ComicDataWrapper>, t: Throwable) {
-                Log.e("HomeViewModel", "Brak internetu/blad", t)
+                Log.e("HomeViewModell", "Brak internetu/blad", t)
                 _loading.value = false
             }
         })

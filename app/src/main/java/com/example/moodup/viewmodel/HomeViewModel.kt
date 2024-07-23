@@ -28,7 +28,7 @@ class HomeViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    //funkcja inicjalizacyjnas
+    //function inits
     init {
         loadMoreComics()
     }

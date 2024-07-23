@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moodup.BuildConfig
 import com.example.moodup.data.Comic
 import com.example.moodup.data.ComicDataWrapper
 import com.example.moodup.data.MarvelApi
@@ -18,8 +19,8 @@ class HomeViewModel : ViewModel() {
     private val _comics = MutableLiveData<List<Comic>>()
     val comics: LiveData<List<Comic>> get() = _comics
 
-    private val publicKey = "ddf99221f3ef736b4d3443c8cfd36c18"
-    private val privateKey = "5de5706c3a4837d91652a91702efbf62b0410722"
+    private val privateKey = BuildConfig.API_PRIVATE_KEY
+    private val publicKey = BuildConfig.API_PUBLIC_KEY
     private val ts = "1"
     private var offset = 0
     private val limit = 10
